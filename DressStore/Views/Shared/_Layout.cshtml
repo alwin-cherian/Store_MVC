@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
@@ -35,16 +34,20 @@
 
                     <div class="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">
-                                    Home
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Shop">
-                                    Shop
-                                </a>
-                            </li>
+                            @if (User.IsInRole(SD.Role_Customer))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                                        Home
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Shop">
+                                        Shop
+                                    </a>
+                                </li>
+                            }
+                            
                             @if (User.IsInRole(SD.Role_Admin))
                             {
                                 <li class="nav-item">
@@ -53,6 +56,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                                        Product
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                                        Users
+                                    </a>
+                                </li<li class="nav-item">
                                     <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
                                         Product
                                     </a>
@@ -80,12 +92,9 @@
             </div>
         </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <partial name="_Notification" />
-            @RenderBody()
-        </main>
-    </div>
+
+    <partial name="_Notification" />
+    @RenderBody()
 
     <footer class="bg-dark text-white py-0">
         <div class="container">

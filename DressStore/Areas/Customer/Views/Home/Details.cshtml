@@ -5,7 +5,87 @@
 <br />
 <br />
 
-<body>
+
+<form method="post">
+    <!-- product -->
+    <section class="pt-5">
+        <div class="container">
+            <div class="row gutter-3 justify-content-between">
+
+                <div class="col-lg-5 pl-md-6 order-2">
+                    <div class="sticky-top">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="item-brand">Neutrale</span>
+                                <h1 class="item-title">@Model.Title</h1>
+                                <span class="item-price">@Model.Price.ToString("c")</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <p>@Model.Description</p>
+                            </div>
+                        </div>
+
+                        <div class="row pl-2 my-3">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                          id="inputGroup-sizing-default">
+                                        Count
+                                    </span>
+                                    <input type="number" value="1" class="form-control text-end"
+                                           aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <a href="#!" class="btn btn-block btn-lg btn-primary">Add to Cart</a>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <a class="nav-link" href="#">Add to wishlist</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-7 order-1">
+                    <div class="row gutter-1">
+                        <div class="col-12">
+                            <figure class="equal zoom">
+                                <img class="zoom-img" src="@Model.ImageUrl" alt="Product">
+                            </figure>
+                        </div>
+                        @*<div class="col-6">
+                            <figure class="equal zoom">
+                                <img class="zoom-img" src="assets/images/demo/product-35-2.jpg" alt="Product">
+                            </figure>
+                        </div>
+                        <div class="col-6">
+                            <figure class="equal zoom">
+                                <img class="zoom-img" src="assets/images/demo/product-35-3.jpg" alt="Product">
+                            </figure>
+                        </div>
+                        <div class="col-12">
+                            <figure class="equal equal-50 zoom">
+                                <img class="zoom-img" src="assets/images/demo/product-35-4.jpg" alt="Product">
+                            </figure>
+                        </div>*@
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</form>
+@*<body>
     <form method="post">
         <div class="container">
             <div class="row gutter-2 gutter-md-4 justify-content-between">
@@ -15,8 +95,8 @@
                         <div class="col-lg-10 order-lg-2">
                             <div class="owl-carousel gallery" data-slider-id="1" data-thumbs="true" data-nav="true">
                                 <figure class="equal">
-                                    <a class="image" href="~/images/products/406825a6-5e7b-4c43-bdbe-c2ac4520e002.jpg"
-                                       style="background-image: url(../../../../wwwroot/images/products/406825a6-5e7b-4c43-bdbe-c2ac4520e002.jpg);">
+                                    <a class="image" href="@Model.ImageUrl"
+                                       style="background-image: url('@Model.ImageUrl');">
                                     </a>
                                 </figure>
 
@@ -24,7 +104,7 @@
                         </div>
                         <div class="col-lg-2 text-center text-lg-left order-lg-1">
                             <div class="owl-thumbs" data-slider-id="1">
-                                <span class="owl-thumb-item"><img src="~/images/products/406825a6-5e7b-4c43-bdbe-c2ac4520e002.jpg" alt=""></span>
+                                <span class="owl-thumb-item"><img src="@Model.ImageUrl" alt=""></span>
                             </div>
                         </div>
                     </div>
@@ -76,7 +156,7 @@
             </div>
         </div>
     </form>
-</body>
+</body>*@
 
 <script src="~/js/vendor.min.js"></script>
 <script src="~/js/app.js"></script>

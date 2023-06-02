@@ -28,9 +28,88 @@ namespace DressStore.Areas.Admin.Controllers
             return View(objProductList);
         }
 
-        public IActionResult Upsert(int? id)
-        {
+        //public IActionResult Upsert(int? id)
+        //{
 
+        //    ProductViewModel productVM = new()
+        //    {
+        //        CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+        //        {
+        //            Text = u.Name,
+        //            Value = u.Id.ToString()
+        //        }),
+        //        product = new Product()
+        //    };
+        //    if(id == null || id ==0)
+        //    {
+        //        return View(productVM);
+        //    }
+        //    else
+        //    {
+        //        //update
+        //        productVM.product = _unitOfWork.product.Get(u => u.Id == id);
+        //        return View(productVM); 
+        //    }
+            
+        //}
+
+        //[HttpPost]
+        //public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        string wwwRootPath = _webHostEnvironment.WebRootPath;
+        //        if(file != null)
+        //        {
+        //            string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+        //            string productPath = Path.Combine(wwwRootPath, @"images\products");
+
+        //            if (!string.IsNullOrEmpty(productViewModel.product.ImageUrl))
+        //            {
+        //                //delete the old photo
+        //                var oldImagePath = 
+        //                    Path.Combine(wwwRootPath, productViewModel.product.ImageUrl.TrimStart('\\'));
+
+        //                if(System.IO.File.Exists(oldImagePath))
+        //                    System.IO.File.Delete(oldImagePath);
+        //            }
+
+        //            using (var fileStream = new FileStream(Path.Combine(productPath , filename), FileMode.Create))
+        //            {
+        //                file.CopyTo(fileStream);
+        //            }
+        //            productViewModel.product.ImageUrl = @"\images\products" + filename;
+        //        }
+
+        //        if(productViewModel.product.Id == 0)
+        //        {
+        //            _unitOfWork.product.Add(productViewModel.product);
+        //        }
+        //        else
+        //        {
+        //            _unitOfWork.product.Update(productViewModel.product);
+        //        }
+                
+        //        _unitOfWork.Save();
+        //        TempData["success"] = "Product created successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        productViewModel.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+        //        {
+        //            Text = u.Name,
+        //            Value = u.Id.ToString()
+        //        });
+        //        return View(productViewModel);
+        //    }
+            
+        //}
+
+
+        public IActionResult Create()
+        {
             ProductViewModel productVM = new()
             {
                 CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
@@ -40,59 +119,31 @@ namespace DressStore.Areas.Admin.Controllers
                 }),
                 product = new Product()
             };
-            if(id == null || id ==0)
-            {
-                return View(productVM);
-            }
-            else
-            {
-                //update
-                productVM.product = _unitOfWork.product.Get(u => u.Id == id);
-                return View(productVM); 
-            }
-            
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file)
+        public IActionResult Create(ProductViewModel productViewModel , IFormFile? file)
         {
-
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if(file != null)
+                if (file != null)
                 {
                     string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"images\products");
 
-                    if (!string.IsNullOrEmpty(productViewModel.product.ImageUrl))
-                    {
-                        //delete the old photo
-                        var oldImagePath = 
-                            Path.Combine(wwwRootPath, productViewModel.product.ImageUrl.TrimStart('\\'));
 
-                        if(System.IO.File.Exists(oldImagePath))
-                            System.IO.File.Delete(oldImagePath);
-                    }
-
-                    using (var fileStream = new FileStream(Path.Combine(productPath , filename), FileMode.Create))
+                    using (var fileStream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
-                    productViewModel.product.ImageUrl = @"\images\products" + filename;
+                    productViewModel.product.ImageUrl = @"\images\products\" + filename;
                 }
 
-                if(productViewModel.product.Id == 0)
-                {
-                    _unitOfWork.product.Add(productViewModel.product);
-                }
-                else
-                {
-                    _unitOfWork.product.Update(productViewModel.product);
-                }
-                
+                _unitOfWork.product.Add(productViewModel.product);
                 _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
+                TempData["success"] = "product created successfully";
                 return RedirectToAction("Index");
             }
             else
@@ -104,28 +155,58 @@ namespace DressStore.Areas.Admin.Controllers
                 });
                 return View(productViewModel);
             }
-            
+
         }
 
-        public IActionResult Edit(int? id)
+        public IActionResult Update(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            Product? productFromDb = _unitOfWork.product.Get(u => u.Id == id);
+            ProductViewModel productVM = new()
+            {
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                product = new Product()
+            };
 
-            if (productFromDb == null)
-                return NotFound();
-            return View(productFromDb);
+            productVM.product = _unitOfWork.product.Get(u => u.Id == id);
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(Product obj)
+        public IActionResult Update(ProductViewModel productViewModel, IFormFile? file)
         {
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.product.Update(obj);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\products");
+
+                    if (!string.IsNullOrEmpty(productViewModel.product.ImageUrl))
+                    {
+                        //delete the old photo
+                        var oldImagePath =
+                            Path.Combine(wwwRootPath, productViewModel.product.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                            System.IO.File.Delete(oldImagePath);
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    productViewModel.product.ImageUrl = @"\images\products\" + filename;
+                }
+
+                _unitOfWork.product.Update(productViewModel.product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Updated successfully";
                 return RedirectToAction("Index");

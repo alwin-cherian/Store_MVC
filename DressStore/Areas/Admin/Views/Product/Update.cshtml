@@ -1,0 +1,51 @@
+﻿@model ProductViewModel
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="product.Id" hidden />
+    <input asp-for="product.ImageUrl" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Update Product</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="product.Title"></label>
+            <input asp-for="product.Title" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="product.Description"></label>
+            <input asp-for="product.Description" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="product.Price"></label>
+            <input asp-for="product.Price" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="product.ImageUrl"></label>
+            <input type="file" name="file" asp-for="product.ImageUrl" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <select asp-for="product.CategoryId" asp-items="@Model.CategoryList">
+                <option disabled selected>--select category-- </option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Update</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back To List</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="~/js/vendor.min.js"></script>
+<script src="~/js/app.js"></script>
+
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
