@@ -17,5 +17,9 @@ namespace DressStore.Models
         public string? City { get; set;}
         public string? State { get; set; }
         public string? PostalCode { get; set; }
+
+        public bool IsBlocked { get; set; }
+        [Phone]
+        public string PhoneNumber { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using DressStore.DataAccess.Data;
 using DressStore.DataAccess.Repository;
+using DressStore.Models;
 using DressStore.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;

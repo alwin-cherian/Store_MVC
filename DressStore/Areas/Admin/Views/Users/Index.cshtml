@@ -1,0 +1,62 @@
+﻿@model List<ApplicationUser>
+
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">
+                Category List
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i>  Create New Category
+            </a>
+        </div>
+
+    </div>
+
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                     Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Block/UnBlock
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var obj in Model)
+            {
+                <tr>
+                    <td>
+                        @obj.Name
+                    </td>
+                    <td>
+                        @obj.Email
+                    </td>
+                    <td>
+                        @if (obj.IsBlocked)
+                        {
+                            <button onclick="location.href='@Url.Action("Unblock", "User", new { id = obj.Id })'">Unblock</button>
+                        }
+                        else
+                        {
+                            <button onclick="location.href='@Url.Action("Block", "User", new { id = obj.Id })'">Block</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+    <script src="~/js/vendor.min.js"></script>
+    <script src="~/js/app.js"></script>
+
+</div>
