@@ -21,6 +21,7 @@ namespace DressStore.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "Must be a postive value")]
         [Display(Name = "Price")]
         public double Price { get; set; }
 

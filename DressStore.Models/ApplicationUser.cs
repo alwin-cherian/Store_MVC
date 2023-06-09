@@ -20,6 +20,6 @@ namespace DressStore.Models
 
         public bool IsBlocked { get; set; }
         [Phone]
-        public string PhoneNumber { get; set; }
+        public new string PhoneNumber { get; set; }
     }
 }

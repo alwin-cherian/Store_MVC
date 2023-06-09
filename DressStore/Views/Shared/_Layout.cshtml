@@ -34,20 +34,18 @@
 
                     <div class="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                         <ul class="navbar-nav mr-auto">
-                            @if (User.IsInRole(SD.Role_Customer))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">
-                                        Home
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Shop">
-                                        Shop
-                                    </a>
-                                </li>
-                            }
-                            
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Shop">
+                                    Shop
+                                </a>
+                            </li>
+
                             @if (User.IsInRole(SD.Role_Admin))
                             {
                                 <li class="nav-item">
@@ -63,10 +61,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="Admin" asp-controller="Users" asp-action="Index">
                                         Users
-                                    </a>
-                                </li<li class="nav-item">
-                                    <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
-                                        Product
                                     </a>
                                 </li>
                             }

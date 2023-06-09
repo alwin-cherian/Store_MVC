@@ -13,10 +13,10 @@ namespace DressStore.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductCatogeryRepo _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductCatogeryRepo unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
@@ -112,7 +112,9 @@ namespace DressStore.Areas.Admin.Controllers
         {
             ProductViewModel productVM = new()
             {
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                CategoryList = _unitOfWork.Category.GetAll()
+                .Where(u => u.IsAvailable) // filter categories that are available
+                .Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()

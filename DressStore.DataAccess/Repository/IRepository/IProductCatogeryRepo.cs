@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DressStore.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork
+    public interface IProductCatogeryRepo
     {
         ICategoryRepository Category { get; }
         

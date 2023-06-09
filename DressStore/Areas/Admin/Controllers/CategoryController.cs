@@ -11,16 +11,16 @@ namespace DressStore.Areas.Admin.Controllers
     [Authorize(Roles =SD.Role_Admin)]
     public class CategoryController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductCatogeryRepo _repo;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IProductCatogeryRepo repo)
         {
-            _unitOfWork = unitOfWork;
+            _repo = repo;
         }
 
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
+            List<Category> objCategoryList = _repo.Category.GetAll().ToList();
             return View(objCategoryList);
         }
 
@@ -39,8 +39,9 @@ namespace DressStore.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(obj);
-                _unitOfWork.Save();
+                obj.IsAvailable = true;
+                _repo.Category.Add(obj);
+                _repo.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -53,7 +54,7 @@ namespace DressStore.Areas.Admin.Controllers
             if (id == null || id == 0)
                 return NotFound();
 
-            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+            Category? categoryFromDb = _repo.Category.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -66,8 +67,8 @@ namespace DressStore.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(obj);
-                _unitOfWork.Save();
+                _repo.Category.Update(obj);
+                _repo.Save();
                 TempData["success"] = "Category Updated successfully";
                 return RedirectToAction("Index");
             }
@@ -79,7 +80,7 @@ namespace DressStore.Areas.Admin.Controllers
             if (id == null || id == 0)
                 return NotFound();
 
-            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+            Category? categoryFromDb = _repo.Category.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -89,15 +90,33 @@ namespace DressStore.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
+            Category? obj = _repo.Category.Get(u => u.Id == id);
             if (obj == null)
                 return NotFound();
 
-            _unitOfWork.Category.Remove(obj);
-            _unitOfWork.Save();
+            _repo.Category.Remove(obj);
+            _repo.Save();
             TempData["success"] = "Category Deleted successfully";
             return RedirectToAction("Index");
 
+        }
+
+        public IActionResult Available(int? id)
+        {
+            Category? obj = _repo.Category.Get(u => u.Id == id);
+            obj.IsAvailable = true;
+            _repo.Category.Update(obj);
+            _repo.Save();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult UnAvailable(int? id)
+        {
+            Category? obj = _repo.Category.Get(u => u.Id == id);
+            obj.IsAvailable = false;
+            _repo.Category.Update(obj);
+            _repo.Save();
+            return RedirectToAction("Index");
         }
     }
 }

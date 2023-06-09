@@ -5,46 +5,46 @@
 namespace DressStore.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddImageUrl : Migration
+    public partial class CategoryIsAvailable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ImageUrl",
-                table: "products",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsAvailable",
+                table: "categories",
+                type: "bit",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: false);
 
             migrationBuilder.UpdateData(
-                table: "products",
+                table: "categories",
                 keyColumn: "Id",
                 keyValue: 1,
-                column: "ImageUrl",
-                value: "");
+                column: "IsAvailable",
+                value: false);
 
             migrationBuilder.UpdateData(
-                table: "products",
+                table: "categories",
                 keyColumn: "Id",
                 keyValue: 2,
-                column: "ImageUrl",
-                value: "");
+                column: "IsAvailable",
+                value: false);
 
             migrationBuilder.UpdateData(
-                table: "products",
+                table: "categories",
                 keyColumn: "Id",
                 keyValue: 3,
-                column: "ImageUrl",
-                value: "");
+                column: "IsAvailable",
+                value: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ImageUrl",
-                table: "products");
+                name: "IsAvailable",
+                table: "categories");
         }
     }
 }

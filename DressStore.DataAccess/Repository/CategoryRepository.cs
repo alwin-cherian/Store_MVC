@@ -23,5 +23,6 @@ namespace DressStore.DataAccess.Repository
         {
             _db.categories.Update(obj);
         }
+
     }
 }

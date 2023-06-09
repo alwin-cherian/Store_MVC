@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace DressStore.DataAccess.Repository
 {
-    public class UnitOfWork : IUnitOfWork
+    public class ProductCatogeryRepo : IProductCatogeryRepo
     {
         private readonly ApplicationDbContest _db;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository product { get; private set; }
 
-        public UnitOfWork(ApplicationDbContest db)
+        public ProductCatogeryRepo(ApplicationDbContest db)
         {
             _db = db;
             Category = new CategoryRepository(_db);

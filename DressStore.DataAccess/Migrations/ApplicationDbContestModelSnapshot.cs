@@ -33,6 +33,9 @@ namespace DressStore.DataAccess.Migrations
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -47,19 +50,22 @@ namespace DressStore.DataAccess.Migrations
                         {
                             Id = 1,
                             DisplayOrder = 1,
-                            Name = "Formals"
+                            IsAvailable = false,
+                            Name = "Shirt"
                         },
                         new
                         {
                             Id = 2,
                             DisplayOrder = 2,
-                            Name = "Casuals"
+                            IsAvailable = false,
+                            Name = "Hoodies"
                         },
                         new
                         {
                             Id = 3,
                             DisplayOrder = 3,
-                            Name = "Denim"
+                            IsAvailable = false,
+                            Name = "T-Shirt"
                         });
                 });
 
