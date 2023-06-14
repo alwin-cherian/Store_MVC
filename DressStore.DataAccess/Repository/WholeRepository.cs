@@ -8,17 +8,28 @@ using System.Threading.Tasks;
 
 namespace DressStore.DataAccess.Repository
 {
-    public class ProductCatogeryRepo : IProductCatogeryRepo
+    public class WholeRepository : IWholeRepository
     {
         private readonly ApplicationDbContest _db;
+
         public ICategoryRepository Category { get; private set; }
         public IProductRepository product { get; private set; }
 
-        public ProductCatogeryRepo(ApplicationDbContest db)
+        public IApplicationUserRepository applicationUser {get; private set;}
+        public IShoppingCartRepository shoppingCart { get; private set; }
+
+        public IOrderDetailRepository orderDetail { get; private set; }
+        public IOrderHeaderRepository orderHeader { get; private set; }
+
+        public WholeRepository(ApplicationDbContest db)
         {
             _db = db;
             Category = new CategoryRepository(_db);
             product = new ProductRepository(_db);
+            shoppingCart = new ShoppingCartRepository(_db);
+            applicationUser = new ApplicationUserRepository(_db);
+            orderDetail = new OrderDetailRepository(_db);
+            orderHeader = new OrderHeaderRepository(_db);
         }
 
         public void Save()

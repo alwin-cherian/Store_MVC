@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace DressStore.DataAccess.Repository.IRepository
 {
-    public interface IProductCatogeryRepo
+    public interface IWholeRepository
     {
         ICategoryRepository Category { get; }
         
         IProductRepository product { get; }
 
+        IApplicationUserRepository applicationUser { get; }
+
+        IShoppingCartRepository shoppingCart { get; }
+
+        IOrderHeaderRepository orderHeader { get; }
+
+        IOrderDetailRepository orderDetail { get; }
         void Save();
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using DressStore.Utility;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContest>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("stripe"));
 
 builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContest>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>{
@@ -22,7 +25,7 @@ builder.Services.ConfigureApplicationCookie(options =>{
 });
 
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<IProductCatogeryRepo , ProductCatogeryRepo>();
+builder.Services.AddScoped<IWholeRepository , WholeRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
@@ -37,6 +40,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.UseRouting();
 app.UseAuthorization();

@@ -15,6 +15,9 @@ namespace DressStore.DataAccess.Data
         public DbSet<Category> categories { get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ShoppingCart> shoppingCarts { get; set; }
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

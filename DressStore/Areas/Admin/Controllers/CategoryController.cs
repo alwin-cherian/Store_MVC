@@ -11,9 +11,9 @@ namespace DressStore.Areas.Admin.Controllers
     [Authorize(Roles =SD.Role_Admin)]
     public class CategoryController : Controller
     {
-        private readonly IProductCatogeryRepo _repo;
+        private readonly IWholeRepository _repo;
 
-        public CategoryController(IProductCatogeryRepo repo)
+        public CategoryController(IWholeRepository repo)
         {
             _repo = repo;
         }

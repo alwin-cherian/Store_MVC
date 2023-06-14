@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ShoppingCart
 <br />
 <br />
 <br />
@@ -7,7 +7,8 @@
 
 
 <form method="post">
-    <!-- product -->
+    <input hidden asp-for="ProductId" />
+    <!-- product-->
     <section class="pt-5">
         <div class="container">
             <div class="row gutter-3 justify-content-between">
@@ -18,14 +19,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <span class="item-brand">Neutrale</span>
-                                <h1 class="item-title">@Model.Title</h1>
-                                <span class="item-price">@Model.Price.ToString("c")</span>
+                                <h1 class="item-title">@Model.Product.Title</h1>
+                                <span class="item-price">@Model.Product.Price.ToString("c")</span>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12">
-                                <p>@Model.Description</p>
+                                <p>@Model.Product.Description</p>
                             </div>
                         </div>
 
@@ -36,7 +37,7 @@
                                           id="inputGroup-sizing-default">
                                         Count
                                     </span>
-                                    <input type="number" value="1" class="form-control text-end"
+                                    <input asp-for="Count" type="number" value="1" class="form-control text-end"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                                 </div>
 
@@ -45,7 +46,7 @@
 
                         <div class="row">
                             <div class="col">
-                                <a href="#!" class="btn btn-block btn-lg btn-primary">Add to Cart</a>
+                                <button type="submit" class="btn btn-block btn-lg btn-primary"> Add to Cart </button>
                             </div>
                             <div class="col-12 mt-1">
                                 <a class="nav-link" href="#">Add to wishlist</a>
@@ -59,7 +60,7 @@
                     <div class="row gutter-1">
                         <div class="col-12">
                             <figure class="equal zoom">
-                                <img class="zoom-img" src="@Model.ImageUrl" alt="Product">
+                                <img class="zoom-img" src="@Model.Product.ImageUrl" alt="Product">
                             </figure>
                         </div>
                         @*<div class="col-6">

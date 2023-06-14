@@ -13,18 +13,18 @@ namespace DressStore.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
-        private readonly IProductCatogeryRepo _unitOfWork;
+        private readonly IWholeRepository _wholeRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductCatogeryRepo unitOfWork, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IWholeRepository wholeRepo, IWebHostEnvironment webHostEnvironment)
         {
-            _unitOfWork = unitOfWork;
+            _wholeRepo = wholeRepo;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.product.GetAll(includeProperties:"category").ToList();
+            List<Product> objProductList = _wholeRepo.product.GetAll(includeProperties:"category").ToList();
             return View(objProductList);
         }
 
@@ -112,7 +112,7 @@ namespace DressStore.Areas.Admin.Controllers
         {
             ProductViewModel productVM = new()
             {
-                CategoryList = _unitOfWork.Category.GetAll()
+                CategoryList = _wholeRepo.Category.GetAll()
                 .Where(u => u.IsAvailable) // filter categories that are available
                 .Select(u => new SelectListItem
                 {
@@ -143,14 +143,14 @@ namespace DressStore.Areas.Admin.Controllers
                     productViewModel.product.ImageUrl = @"\images\products\" + filename;
                 }
 
-                _unitOfWork.product.Add(productViewModel.product);
-                _unitOfWork.Save();
+                _wholeRepo.product.Add(productViewModel.product);
+                _wholeRepo.Save();
                 TempData["success"] = "product created successfully";
                 return RedirectToAction("Index");
             }
             else
             {
-                productViewModel.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                productViewModel.CategoryList = _wholeRepo.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -167,7 +167,7 @@ namespace DressStore.Areas.Admin.Controllers
 
             ProductViewModel productVM = new()
             {
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                CategoryList = _wholeRepo.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -175,7 +175,7 @@ namespace DressStore.Areas.Admin.Controllers
                 product = new Product()
             };
 
-            productVM.product = _unitOfWork.product.Get(u => u.Id == id);
+            productVM.product = _wholeRepo.product.Get(u => u.Id == id);
             return View(productVM);
         }
 
@@ -208,8 +208,8 @@ namespace DressStore.Areas.Admin.Controllers
                     productViewModel.product.ImageUrl = @"\images\products\" + filename;
                 }
 
-                _unitOfWork.product.Update(productViewModel.product);
-                _unitOfWork.Save();
+                _wholeRepo.product.Update(productViewModel.product);
+                _wholeRepo.Save();
                 TempData["success"] = "Product Updated successfully";
                 return RedirectToAction("Index");
             }
@@ -221,7 +221,7 @@ namespace DressStore.Areas.Admin.Controllers
             if (id == null || id == 0)
                 return NotFound();
 
-            Product? categoryFromDb = _unitOfWork.product.Get(u => u.Id == id);
+            Product? categoryFromDb = _wholeRepo.product.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -231,12 +231,12 @@ namespace DressStore.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Product? obj = _unitOfWork.product.Get(u => u.Id == id);
+            Product? obj = _wholeRepo.product.Get(u => u.Id == id);
             if (obj == null)
                 return NotFound();
 
-            _unitOfWork.product.Remove(obj);
-            _unitOfWork.Save();
+            _wholeRepo.product.Remove(obj);
+            _wholeRepo.Save();
             TempData["success"] = "Product Deleted successfully";
             return RedirectToAction("Index");
 
@@ -246,7 +246,7 @@ namespace DressStore.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Product> objProductList = _unitOfWork.product.GetAll(includeProperties: "category").ToList();
+            List<Product> objProductList = _wholeRepo.product.GetAll(includeProperties: "category").ToList();
             return Json(new {data = objProductList });
         }
 
