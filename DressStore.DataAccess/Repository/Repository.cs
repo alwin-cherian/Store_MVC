@@ -45,11 +45,11 @@ namespace DressStore.DataAccess.Repository
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
-                foreach (var includeProp in includeProperties
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
+                //foreach (var includeProp in includeProperties
+                //    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                //{
+                //    query = query.Include(includeProp);
+                //}
             }
             return query.FirstOrDefault();
         }
@@ -69,7 +69,6 @@ namespace DressStore.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-
             return query.ToList();
         }
 

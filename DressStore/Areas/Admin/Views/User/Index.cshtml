@@ -1,0 +1,105 @@
+﻿@model List<ApplicationUser>
+
+
+<br />
+<br />
+<br />
+
+
+<!-- content -->
+<div class="content ">
+
+    <div class="mb-4">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <h3>User List</h3>
+        </nav>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-md-flex gap-4 align-items-center">
+                <div class="d-none d-md-flex">All Orders</div>
+                <div class="d-md-flex gap-4 align-items-center">
+                    <form class="mb-3 mb-md-0">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option>Sort by</option>
+                                    <option value="desc">Desc</option>
+                                    <option value="asc">Asc</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-custom table-lg mb-0" id="orders">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>
+                            @obj.UserName
+                        </td>
+                        <td>
+                            @obj.Email
+                        </td>
+                        <td>
+                            @if (!obj.IsBlocked)
+                            {
+                                <button onclick="location.href='@Url.Action("Block", "User", new { id = obj.Id })'" class="w-100 btn btn-lg btn-primary text-white">Block</button>
+                            }
+                            else
+                            {
+                                <button onclick="location.href='@Url.Action("UnBlock", "User", new { id = obj.Id })'" class="w-100 btn btn-lg btn-primary text-white">UnBlock</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <nav class="mt-4" aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+<script src="~/js/vendor.min.js"></script>
+<script src="~/js/app.js"></script>

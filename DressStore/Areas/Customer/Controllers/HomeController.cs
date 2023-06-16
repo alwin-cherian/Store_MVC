@@ -67,7 +67,7 @@ namespace DressStore.Areas.Customer.Controllers
             TempData["success"] = "Cart updated Sccessfully";
             _wholeRepo.Save();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Checkout", "Cart");
         }
 
         public IActionResult Privacy()
