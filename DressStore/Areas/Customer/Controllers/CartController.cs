@@ -35,6 +35,10 @@ namespace DressStore.Areas.Customer.Controllers
                 OrderHeader = new()
             };
 
+            if(ShoppingCartVM == null)
+            {
+                return View("cartEmpty");
+            }
             foreach(var cart in  ShoppingCartVM.ShoppingCartList)
             {
                 cart.Price = GetPrice(cart);
@@ -203,10 +207,14 @@ namespace DressStore.Areas.Customer.Controllers
 
             return View(id);
         }
-
+        public IActionResult cartEmpty()
+        {
+            return View();
+        }
         private double GetPrice (ShoppingCart shoppingCart)
         {
             return shoppingCart.Product.Price;
         }
+
     }
 }

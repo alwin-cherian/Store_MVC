@@ -69,7 +69,6 @@ namespace DressStore.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-
             return query.ToList();
         }
 

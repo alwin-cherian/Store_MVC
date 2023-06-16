@@ -83,7 +83,7 @@
                                                 <div class="product-price">
                                                     <span>@product.Price.ToString("c")</span>
                                                     <span class="product-action">
-                                                        <a href="#!">Add to cart</a>
+                                                    <a asp-action="Details" asp-route-productId="@product.Id">Add to cart</a>
                                                     </span>
                                                 </div>
                                                 <a href="#!" class="product-like"></a>
