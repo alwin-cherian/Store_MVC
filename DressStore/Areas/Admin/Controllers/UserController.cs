@@ -28,9 +28,9 @@ namespace DressStore.Areas.Admin.Controllers
             return View(objUserList);
         }
 
-        public IActionResult UnBlock(string? id)
+        public async Task<IActionResult> UnBlock(string? id)
         {
-            ApplicationUser? user = _wholeRepository.applicationUser.Get(u => u.Id == id);
+            ApplicationUser? user = await _wholeRepository.applicationUser.GetAsync(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -41,9 +41,9 @@ namespace DressStore.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Block(string? id)
+        public async Task<IActionResult> Block(string? id)
         {
-            ApplicationUser? user = _wholeRepository.applicationUser.Get(u => u.Id == id);
+            ApplicationUser? user = await _wholeRepository.applicationUser.GetAsync(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();

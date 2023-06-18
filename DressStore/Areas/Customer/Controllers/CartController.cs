@@ -23,19 +23,19 @@ namespace DressStore.Areas.Customer.Controllers
             _wholeRepo = wholeRepo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _wholeRepo.shoppingCart.GetAll(u => u.ApplicationUserId == userId,
+                ShoppingCartList =await _wholeRepo.shoppingCart.GetAllAsync(u => u.ApplicationUserId == userId,
                 includeProperties:"Product"),
                 OrderHeader = new()
             };
-
-            if(ShoppingCartVM == null)
+            
+            if (ShoppingCartVM.ShoppingCartList.Count() == 0)
             {
                 return View("cartEmpty");
             }
@@ -49,18 +49,18 @@ namespace DressStore.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        public IActionResult plus(int cartId)
+        public async Task<IActionResult> plus(int cartId)
         {
-            var cartFromDb = _wholeRepo.shoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = await _wholeRepo.shoppingCart.GetAsync(u => u.Id == cartId);
             cartFromDb.Count += 1;
             _wholeRepo.shoppingCart.Update(cartFromDb);
             _wholeRepo.Save();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Minus(int cartId)
+        public async Task<IActionResult> Minus(int cartId)
         {
-            var cartFromDb = _wholeRepo.shoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = await _wholeRepo.shoppingCart.GetAsync(u => u.Id == cartId);
             if(cartFromDb.Count <= 1)
             {
                 //remove that from the cart
@@ -74,30 +74,30 @@ namespace DressStore.Areas.Customer.Controllers
             _wholeRepo.Save();
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Remove(int cartId)
+        public async Task<IActionResult> Remove(int cartId)
         {
-            var cartFromDb = _wholeRepo.shoppingCart.Get(u => u.Id == cartId);;
+            var cartFromDb =await _wholeRepo.shoppingCart.GetAsync(u => u.Id == cartId);
             _wholeRepo.shoppingCart.Remove(cartFromDb);
             _wholeRepo.Save();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _wholeRepo.shoppingCart.GetAll(u => u.ApplicationUserId == userId,
+                ShoppingCartList =await _wholeRepo.shoppingCart.GetAllAsync(u => u.ApplicationUserId == userId,
                 includeProperties: "Product"),
                 OrderHeader = new()
             };
 
-            ShoppingCartVM.OrderHeader.ApplicationUser = _wholeRepo.applicationUser.Get(u=>u.Id == userId);
+            ShoppingCartVM.OrderHeader.ApplicationUser =await _wholeRepo.applicationUser.GetAsync(u=>u.Id == userId);
 
-            ShoppingCartVM.OrderHeader.phoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-
+            //To pass the phone number
+            //ShoppingCartVM.OrderHeader.phoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
@@ -109,18 +109,18 @@ namespace DressStore.Areas.Customer.Controllers
         }
         [HttpPost]
         [ActionName("Checkout")]
-        public IActionResult CheckoutPOST()
+        public async Task<IActionResult> CheckoutPOST()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            ShoppingCartVM.ShoppingCartList = _wholeRepo.shoppingCart.GetAll(u => u.ApplicationUserId == userId,
+            ShoppingCartVM.ShoppingCartList =await _wholeRepo.shoppingCart.GetAllAsync(u => u.ApplicationUserId == userId,
                 includeProperties: "Product");
 
             ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
             ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
-            ApplicationUser applicationUser = _wholeRepo.applicationUser.Get(u => u.Id == userId);
+            ApplicationUser applicationUser =await _wholeRepo.applicationUser.GetAsync(u => u.Id == userId);
 
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
@@ -187,9 +187,9 @@ namespace DressStore.Areas.Customer.Controllers
             return RedirectToAction(nameof(OrderConfirmation), new {id = ShoppingCartVM.OrderHeader.Id});
         }
 
-        public IActionResult OrderConfirmation(int id)
+        public async Task<IActionResult> OrderConfirmation(int id)
         {
-            OrderHeader orderHeader = _wholeRepo.orderHeader.Get(u => u.Id == id, includeProperties:"ApplicationUser");
+            OrderHeader orderHeader = await _wholeRepo.orderHeader.GetAsync(u => u.Id == id, includeProperties:"ApplicationUser");
             var service = new SessionService();
             Session session = service.Get(orderHeader.SessionId);
 
@@ -199,13 +199,21 @@ namespace DressStore.Areas.Customer.Controllers
                 _wholeRepo.orderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                 _wholeRepo.Save();
             }
-            List<ShoppingCart> shoppingCarts = _wholeRepo.shoppingCart.
-                GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+
+            OrderConfirmationVM orderDetails = new OrderConfirmationVM
+            {
+                OrderId = id,
+                TransactionId = session.PaymentIntentId
+            };
+
+
+            List<ShoppingCart> shoppingCarts = ( await _wholeRepo.shoppingCart.
+                GetAllAsync(u => u.ApplicationUserId == orderHeader.ApplicationUserId)).ToList();
 
             _wholeRepo.shoppingCart.RemoveRange(shoppingCarts);
             _wholeRepo.Save();
 
-            return View(id);
+            return View(orderDetails);
         }
         public IActionResult cartEmpty()
         {

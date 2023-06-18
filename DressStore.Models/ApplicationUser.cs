@@ -19,7 +19,5 @@ namespace DressStore.Models
         public string? PostalCode { get; set; }
 
         public bool IsBlocked { get; set; }
-        [Phone]
-        public new string PhoneNumber { get; set; }
     }
 }

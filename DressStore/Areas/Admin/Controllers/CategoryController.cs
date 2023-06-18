@@ -18,9 +18,9 @@ namespace DressStore.Areas.Admin.Controllers
             _repo = repo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Category> objCategoryList = _repo.Category.GetAll().ToList();
+            List<Category> objCategoryList =(await _repo.Category.GetAllAsync()).ToList();
             return View(objCategoryList);
         }
 
@@ -49,12 +49,12 @@ namespace DressStore.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            Category? categoryFromDb = _repo.Category.Get(u => u.Id == id);
+            Category? categoryFromDb = await _repo.Category.GetAsync(u => u.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -75,12 +75,12 @@ namespace DressStore.Areas.Admin.Controllers
             return View();
 
         }
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            Category? categoryFromDb = _repo.Category.Get(u => u.Id == id);
+            Category? categoryFromDb = await _repo.Category.GetAsync(u => u.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -88,9 +88,9 @@ namespace DressStore.Areas.Admin.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        public async Task<IActionResult> DeletePOST(int? id)
         {
-            Category? obj = _repo.Category.Get(u => u.Id == id);
+            Category? obj = await _repo.Category.GetAsync(u => u.Id == id);
             if (obj == null)
                 return NotFound();
 
@@ -101,18 +101,18 @@ namespace DressStore.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Available(int? id)
+        public async Task<IActionResult> Available(int? id)
         {
-            Category? obj = _repo.Category.Get(u => u.Id == id);
+            Category? obj = await _repo.Category.GetAsync(u => u.Id == id);
             obj.IsAvailable = true;
             _repo.Category.Update(obj);
             _repo.Save();
             return RedirectToAction("Index");
         }
 
-        public IActionResult UnAvailable(int? id)
+        public async Task<IActionResult> UnAvailable(int? id)
         {
-            Category? obj = _repo.Category.Get(u => u.Id == id);
+            Category? obj =await  _repo.Category.GetAsync(u => u.Id == id);
             obj.IsAvailable = false;
             _repo.Category.Update(obj);
             _repo.Save();

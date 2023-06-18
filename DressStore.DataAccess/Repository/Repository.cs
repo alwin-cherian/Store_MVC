@@ -29,7 +29,7 @@ namespace DressStore.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;
             if (tracked)
@@ -51,10 +51,10 @@ namespace DressStore.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if(filter != null)
@@ -69,7 +69,7 @@ namespace DressStore.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
         public void Remove(T entity)

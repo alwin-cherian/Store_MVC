@@ -1,10 +1,18 @@
-﻿<br />
-<br />
-<br />
-<br />
-<br />
+﻿@model OrderConfirmationVM
 
-<h2>Order Placed Successfully</h2>
+<section class="py-0 text-dark">
+    <div class="image image-overlay" style="background-image:url(/images/background-3.jpg)"></div>
+    <div class="container">
+        <div class="row align-items-center justify-content-center vh-100">
+            <div class="col-10 col-md-8 col-lg-4 text-center">
+                <h1><i class="bi bi-check-square-fill"></i></h1>
+                <p class="display-1 font-weight-bold">Great <i class="bi bi-emoji-smile-fill"></i></p>
+                <p class="lead"> Order Has been Placed Successfully with order Id : @Model.OrderId & Transaction Id: @Model.TransactionId </p>
+                <button onclick="location.href='@Url.Action("Index", "Home")'" type="button" class="btn btn-primary">Go Back !..</button>
+            </div>
+        </div>
+    </div>
+</section>
 
 <script src="~/js/vendor.min.js"></script>
 <script src="~/js/app.js"></script>

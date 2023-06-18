@@ -22,9 +22,9 @@ namespace DressStore.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Product> objProductList = _wholeRepo.product.GetAll(includeProperties:"category").ToList();
+            List<Product> objProductList = (await _wholeRepo.product.GetAllAsync(includeProperties:"category")).ToList();
             return View(objProductList);
         }
 
@@ -108,11 +108,11 @@ namespace DressStore.Areas.Admin.Controllers
         //}
 
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ProductViewModel productVM = new()
             {
-                CategoryList = _wholeRepo.Category.GetAll()
+                CategoryList = (await _wholeRepo.Category.GetAllAsync())
                 .Where(u => u.IsAvailable) // filter categories that are available
                 .Select(u => new SelectListItem
                 {
@@ -125,7 +125,7 @@ namespace DressStore.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel productViewModel , IFormFile? file)
+        public async Task<IActionResult> Create(ProductViewModel productViewModel , IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -150,7 +150,7 @@ namespace DressStore.Areas.Admin.Controllers
             }
             else
             {
-                productViewModel.CategoryList = _wholeRepo.Category.GetAll().Select(u => new SelectListItem
+                productViewModel.CategoryList = (await _wholeRepo.Category.GetAllAsync()).Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -160,14 +160,14 @@ namespace DressStore.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Update(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
             ProductViewModel productVM = new()
             {
-                CategoryList = _wholeRepo.Category.GetAll().Select(u => new SelectListItem
+                CategoryList = (await _wholeRepo.Category.GetAllAsync()).Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -175,7 +175,7 @@ namespace DressStore.Areas.Admin.Controllers
                 product = new Product()
             };
 
-            productVM.product = _wholeRepo.product.Get(u => u.Id == id);
+            productVM.product = await _wholeRepo.product.GetAsync(u => u.Id == id);
             return View(productVM);
         }
 
@@ -216,12 +216,12 @@ namespace DressStore.Areas.Admin.Controllers
             return View();
 
         }
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            Product? categoryFromDb = _wholeRepo.product.Get(u => u.Id == id);
+            Product? categoryFromDb = await _wholeRepo.product.GetAsync(u => u.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -229,9 +229,9 @@ namespace DressStore.Areas.Admin.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        public async Task<IActionResult> DeletePOST(int? id)
         {
-            Product? obj = _wholeRepo.product.Get(u => u.Id == id);
+            Product? obj = await _wholeRepo.product.GetAsync(u => u.Id == id);
             if (obj == null)
                 return NotFound();
 
@@ -244,9 +244,9 @@ namespace DressStore.Areas.Admin.Controllers
 
         #region APICALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<Product> objProductList = _wholeRepo.product.GetAll(includeProperties: "category").ToList();
+            List<Product> objProductList =(await _wholeRepo.product.GetAllAsync(includeProperties: "category")).ToList();
             return Json(new {data = objProductList });
         }
 

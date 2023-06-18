@@ -19,23 +19,23 @@ namespace DressStore.Areas.Customer.Controllers
             _wholeRepo = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Product> productList = _wholeRepo.product.GetAll(includeProperties: "category");
+            IEnumerable<Product> productList =await _wholeRepo.product.GetAllAsync(includeProperties: "category");
             return View(productList);
         }
 
-        public IActionResult Shop()
+        public async Task<IActionResult> Shop()
         {
-            IEnumerable<Product> productList = _wholeRepo.product.GetAll(includeProperties: "category");
+            IEnumerable<Product> productList = await _wholeRepo.product.GetAllAsync(includeProperties: "category");
             return View(productList);
         }
 
-        public IActionResult Details(int productId)
+        public async Task<IActionResult> Details(int productId)
         {
             ShoppingCart cart = new()
             {
-                Product = _wholeRepo.product.Get(u=> u.Id == productId, includeProperties: "category"),
+                Product = await _wholeRepo.product.GetAsync(u=> u.Id == productId, includeProperties: "category"),
                 Count = 1,
                 ProductId = productId
             };
@@ -44,13 +44,13 @@ namespace DressStore.Areas.Customer.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Details(ShoppingCart shoppingCart)
+        public async Task<IActionResult> Details(ShoppingCart shoppingCart)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             shoppingCart.ApplicationUserId = userId;
 
-            ShoppingCart cartFromDb = _wholeRepo.shoppingCart.Get(u=> u.ApplicationUserId == userId && 
+            ShoppingCart cartFromDb = await _wholeRepo.shoppingCart.GetAsync(u=> u.ApplicationUserId == userId && 
             u.ProductId == shoppingCart.ProductId);
             
             if(cartFromDb != null)
@@ -70,6 +70,10 @@ namespace DressStore.Areas.Customer.Controllers
             return RedirectToAction("Index", "Cart");
         }
 
+        public IActionResult cartEmpty()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

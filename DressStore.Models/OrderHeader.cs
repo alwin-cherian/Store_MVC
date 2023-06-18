@@ -39,14 +39,17 @@ namespace DressStore.Models
         [Required]
         public string LastName { get; set; }
         [Required]
+        [StringLength(60, ErrorMessage = "The Address should be properly specified", MinimumLength = 6)]
         public string StreetAddress { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
         public string State { get; set; }
         [Required]
+        [StringLength(6,ErrorMessage ="PinCode must be 6 digits ",MinimumLength = 5)]
         public string PostalCode { get; set; }
         [Required]
+        [StringLength(12, ErrorMessage = "The phone number must be 10-12 digits long.", MinimumLength = 6)]
         public string phoneNumber { get; set; }
         
     }

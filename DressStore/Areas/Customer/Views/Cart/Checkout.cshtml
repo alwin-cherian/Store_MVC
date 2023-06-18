@@ -32,96 +32,37 @@
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
                             <input asp-for="OrderHeader.FirstName" type="text" class="form-control" id="firstName" placeholder="">
+                            <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
                             <input asp-for="OrderHeader.LastName"type="text" class="form-control" id="lastName" placeholder="">
+                            <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
                         </div>
                         <div class="form-group col">
                             <label for="PhoneNumber">Phone Number</label>
                             <input asp-for="OrderHeader.phoneNumber" type=" text" class="form-control" id="PhoneNumber" placeholder="">
+                            <span asp-validation-for="OrderHeader.phoneNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="State">State</label>
                             <input asp-for="OrderHeader.State" type="text" class="form-control" id="State" placeholder="">
+                            <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="city">City</label>
                             <input asp-for="OrderHeader.City" type="text" class="form-control" id="city" placeholder="">
+                            <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="postcode">Postcode</label>
                             <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" id="postcode" placeholder="">
+                            <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-8">
                             <label for="address">Address</label>
                             <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" id="address" placeholder="">
-                        </div>
-                    </div>
-
-                    <!-- payment -->
-                    <div class="row align-items-end mb-2">
-                        <div class="col-md-6">
-                            <h2 class="h3 mb-0"><span class="text-muted">02.</span> Payment</h2>
-                        </div>
-                        <div class="col-md-6 text-md-right">
-                            <a class="eyebrow unedrline action" data-toggle="modal" data-target="#payments">My payment methods</a>
-                        </div>
-                    </div>
-                    <div class="row gutter-1 mb-6">
-                        <div class="col-12 pb-1">
-                            <ul class="nav nav-tabs lavalamp" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Credit Card</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">PayPal</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-12">
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <div class="row gutter-1">
-                                        <div class="form-group col-12">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1"><i class="icon-credit-card"></i></span>
-                                                </div>
-                                                <input type="tel" class="form-control" placeholder="Card Number" aria-label="Username" aria-describedby="basic-addon1">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="nameOnCard">Name on Card</label>
-                                            <input type="text" class="form-control" id="nameOnCard" placeholder="">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="month">Month</label>
-                                            <input type="date" class="form-control" id="month">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="cvv">CVV</label>
-                                            <input type="password" class="form-control" id="cvv" placeholder="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div class="row gutter-1">
-                                        <div class="form-group col-md-8">
-                                            <input type="email" class="form-control" id="mail" placeholder="Email">
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <a href="#!" class="btn btn-block btn-secondary">Pay with paypal</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="custom-control custom-switch mb-2">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                <label class="custom-control-label text-muted" for="customSwitch1">Billing address same as delivery.</label>
-                            </div>
+                            <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -207,6 +148,11 @@
         </div>
     </section>
 </form>
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial"/>
+    }
+}
 
 <script src="~/js/vendor.min.js"></script>
 <script src="~/js/app.js"></script>
