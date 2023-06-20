@@ -61,9 +61,21 @@ namespace DressStore.Areas.Customer.Controllers
             }
             else
             {
-                //add cart record
+                // Add cart record
                 _wholeRepo.shoppingCart.Add(shoppingCart);
+
+                // Retrieve the product from the database
+                var product = await _wholeRepo.product.GetAsync(p => p.Id == shoppingCart.ProductId);
+
+                if (product != null && shoppingCart.Count > product.TotalQuantity)
+                {
+                    shoppingCart.Product = product;// Assign the retrieved product to the model
+                    TempData["error"] = "Stock Is Limited in Number";
+                    return View(shoppingCart); // Return the view with the validation error
+                }              
+                
             }
+
             TempData["success"] = "Cart updated Sccessfully";
             _wholeRepo.Save();
 

@@ -44,8 +44,8 @@ namespace DressStore.Areas.Customer.Controllers
                 cart.Price = GetPrice(cart);
                 cart.EachProductPrice = (cart.Price * cart.Count);
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-            }
 
+            }
             return View(ShoppingCartVM);
         }
 
@@ -150,6 +150,14 @@ namespace DressStore.Areas.Customer.Controllers
                 _wholeRepo.Save();
             }
 
+            foreach (var item in ShoppingCartVM.ShoppingCartList)
+            {
+                var soldQuantity = item.Count; // Get the quantity of the item sold
+                item.Product.TotalQuantity -= soldQuantity; // Reduce the total quantity of the product
+                _wholeRepo.shoppingCart.Update(item);
+                _wholeRepo.Save(); 
+            }
+
             var domain = "https://localhost:7143/";
             var options = new SessionCreateOptions
             {
@@ -184,6 +192,8 @@ namespace DressStore.Areas.Customer.Controllers
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
 
+
+
             return RedirectToAction(nameof(OrderConfirmation), new {id = ShoppingCartVM.OrderHeader.Id});
         }
 
@@ -205,6 +215,7 @@ namespace DressStore.Areas.Customer.Controllers
                 OrderId = id,
                 TransactionId = session.PaymentIntentId
             };
+
 
 
             List<ShoppingCart> shoppingCarts = ( await _wholeRepo.shoppingCart.

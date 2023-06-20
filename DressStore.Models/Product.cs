@@ -31,5 +31,8 @@ namespace DressStore.Models
         public Category category { get; set; }
         [ValidateNever]
         public string ImageUrl { get; set; }
+
+        [Required]
+        public double TotalQuantity { get; set; }
     }
 }

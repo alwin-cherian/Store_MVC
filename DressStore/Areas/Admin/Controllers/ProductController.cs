@@ -28,86 +28,6 @@ namespace DressStore.Areas.Admin.Controllers
             return View(objProductList);
         }
 
-        //public IActionResult Upsert(int? id)
-        //{
-
-        //    ProductViewModel productVM = new()
-        //    {
-        //        CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-        //        {
-        //            Text = u.Name,
-        //            Value = u.Id.ToString()
-        //        }),
-        //        product = new Product()
-        //    };
-        //    if(id == null || id ==0)
-        //    {
-        //        return View(productVM);
-        //    }
-        //    else
-        //    {
-        //        //update
-        //        productVM.product = _unitOfWork.product.Get(u => u.Id == id);
-        //        return View(productVM); 
-        //    }
-            
-        //}
-
-        //[HttpPost]
-        //public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file)
-        //{
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        string wwwRootPath = _webHostEnvironment.WebRootPath;
-        //        if(file != null)
-        //        {
-        //            string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-        //            string productPath = Path.Combine(wwwRootPath, @"images\products");
-
-        //            if (!string.IsNullOrEmpty(productViewModel.product.ImageUrl))
-        //            {
-        //                //delete the old photo
-        //                var oldImagePath = 
-        //                    Path.Combine(wwwRootPath, productViewModel.product.ImageUrl.TrimStart('\\'));
-
-        //                if(System.IO.File.Exists(oldImagePath))
-        //                    System.IO.File.Delete(oldImagePath);
-        //            }
-
-        //            using (var fileStream = new FileStream(Path.Combine(productPath , filename), FileMode.Create))
-        //            {
-        //                file.CopyTo(fileStream);
-        //            }
-        //            productViewModel.product.ImageUrl = @"\images\products" + filename;
-        //        }
-
-        //        if(productViewModel.product.Id == 0)
-        //        {
-        //            _unitOfWork.product.Add(productViewModel.product);
-        //        }
-        //        else
-        //        {
-        //            _unitOfWork.product.Update(productViewModel.product);
-        //        }
-                
-        //        _unitOfWork.Save();
-        //        TempData["success"] = "Product created successfully";
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        productViewModel.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-        //        {
-        //            Text = u.Name,
-        //            Value = u.Id.ToString()
-        //        });
-        //        return View(productViewModel);
-        //    }
-            
-        //}
-
-
         public async Task<IActionResult> Create()
         {
             ProductViewModel productVM = new()
@@ -216,31 +136,7 @@ namespace DressStore.Areas.Admin.Controllers
             return View();
 
         }
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || id == 0)
-                return NotFound();
-
-            Product? categoryFromDb = await _wholeRepo.product.GetAsync(u => u.Id == id);
-
-            if (categoryFromDb == null)
-                return NotFound();
-            return View(categoryFromDb);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeletePOST(int? id)
-        {
-            Product? obj = await _wholeRepo.product.GetAsync(u => u.Id == id);
-            if (obj == null)
-                return NotFound();
-
-            _wholeRepo.product.Remove(obj);
-            _wholeRepo.Save();
-            TempData["success"] = "Product Deleted successfully";
-            return RedirectToAction("Index");
-
-        }
+        
 
         #region APICALLS
         [HttpGet]
@@ -249,6 +145,31 @@ namespace DressStore.Areas.Admin.Controllers
             List<Product> objProductList =(await _wholeRepo.product.GetAllAsync(includeProperties: "category")).ToList();
             return Json(new {data = objProductList });
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            var productToBeDeleted = await _wholeRepo.product.GetAsync(u => u.Id == id);
+            if(productToBeDeleted == null)
+            {
+                return Json(new { success = false , message = "Error while deleting" });
+            }
+
+            var oldImagePath =
+                Path.Combine(_webHostEnvironment.WebRootPath,
+                productToBeDeleted.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _wholeRepo.product.Remove(productToBeDeleted);
+            _wholeRepo.Save();
+
+            return Json(new { success = true, message = "Delete Successful" });
+        }
+
+
 
         #endregion
     }

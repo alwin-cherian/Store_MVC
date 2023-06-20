@@ -25,6 +25,10 @@
             <input type="file" name="file" asp-for="product.ImageUrl" class="form-control" />
         </div>
         <div class="mb-3 row">
+            <label asp-for="product.TotalQuantity"></label>
+            <input asp-for="product.TotalQuantity" class="form-control" />
+        </div>
+        <div class="mb-3 row">
             <select asp-for="product.CategoryId" asp-items="@Model.CategoryList">
                 <option disabled selected>--select category-- </option>
             </select>

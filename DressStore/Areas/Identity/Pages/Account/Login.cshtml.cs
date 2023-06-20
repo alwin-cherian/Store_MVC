@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using DressStore.DataAccess.Repository.IRepository;
+using DressStore.Models;
 
 namespace DressStore.Areas.Identity.Pages.Account
 {
@@ -115,14 +116,17 @@ namespace DressStore.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                //var user = await _userManager.FindByEmailAsync(Input.Email);
-                //if (user != null && user.isbalanced)
+                
+                //var user = await _userManager.FindByNameAsync(Input.UserName);
+
+                //if(user != null && user.)
                 //{
-                //    ModelState.AddModelError(string.Empty, "User is Blocked.");
+                //    ModelState.AddModelError(string.Empty, "User is blocked.");
                 //    return Page();
                 //}
 
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

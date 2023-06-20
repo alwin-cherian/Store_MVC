@@ -27,6 +27,7 @@ namespace DressStore.DataAccess.Repository
                 objFromDb.Description = obj.Description;
                 objFromDb.Price = obj.Price;
                 objFromDb.CategoryId = obj.CategoryId;
+                objFromDb.TotalQuantity = obj.TotalQuantity;
                 if(obj.ImageUrl != null)
                 {
                     objFromDb.ImageUrl = obj.ImageUrl;
