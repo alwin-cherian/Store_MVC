@@ -22,6 +22,10 @@ namespace DressStore.Models
         public DateTime OrderDate { get; set; }
         public DateTime ShippingDate { get; set; }
         public double OrderTotal { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? CouponDiscount { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? NewOrderTotal { get; set; }
 
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }

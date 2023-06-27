@@ -36,7 +36,13 @@ namespace DressStore.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("Name", "Name and Display order cannot be Same ");
             }
-
+            
+            var nameExist = _repo.Category.GetAsync(u=>u.Name == obj.Name);
+            if(nameExist != null)
+            {
+                TempData["error"] = "Category already exist";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 obj.IsAvailable = true;

@@ -21,6 +21,8 @@ namespace DressStore.DataAccess.Repository
         public IOrderDetailRepository orderDetail { get; private set; }
         public IOrderHeaderRepository orderHeader { get; private set; }
 
+        public ICouponRepository coupon { get; private set; }
+
         public WholeRepository(ApplicationDbContest db)
         {
             _db = db;
@@ -30,6 +32,7 @@ namespace DressStore.DataAccess.Repository
             applicationUser = new ApplicationUserRepository(_db);
             orderDetail = new OrderDetailRepository(_db);
             orderHeader = new OrderHeaderRepository(_db);
+            coupon = new CouponRepository(_db);
         }
 
         public void Save()

@@ -1,0 +1,53 @@
+﻿@model Coupon
+
+<form method="post" enctype="multipart/form-data">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Product</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="CouponName">Coupon Name</label>
+            <input asp-for="CouponName" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="DiscountAmount">Discount Amount</label>
+            <input asp-for="DiscountAmount" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="DiscountPercentage">Discount Percentage(Optional)</label>
+            <input asp-for="DiscountPercentage" class="form-control" />
+            <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="MinPurchase">Minimum Purchase</label>
+            <input  asp-for="MinPurchase" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="MaxPurchase">Maximum Purchase(optional)</label>
+            <input asp-for="MaxPurchase" class="form-control" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="ExpirationDate"> Expiry Date </label>
+            <input type="date" asp-for="ExpirationDate" class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Create</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Coupon" asp-action="Index" class="btn btn-secondary form-control" >Back To List</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="~/js/vendor.min.js"></script>
+<script src="~/js/app.js"></script>
+
+
+@section Scripts{
+    @{
+        <partial name = "_ValidationScriptsPartial" />
+    }
+}

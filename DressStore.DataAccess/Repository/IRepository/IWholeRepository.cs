@@ -19,6 +19,8 @@ namespace DressStore.DataAccess.Repository.IRepository
         IOrderHeaderRepository orderHeader { get; }
 
         IOrderDetailRepository orderDetail { get; }
+
+        ICouponRepository coupon { get; }
         void Save();
     }
 }

@@ -32,5 +32,10 @@ namespace DressStore.Models
 
         [NotMapped]
         public double EachProductPrice { get; set; }
+        [NotMapped]
+        public decimal? CouponDiscount { get; set; }
+        [NotMapped]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? NewPrice { get; set; }
     }
 }

@@ -120,8 +120,12 @@
                                             <span>Free</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Discount
-                                            <span>-25%</span>
+                                            <input id="couponInput" class="form-control" aria-required="true" placeholder="Coupon" />
+                                            <a id="applyCouponButton" class="eyebrow underline action">Check</a>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Coupon Discount
+                                            <span id="totalAmount">@ViewBag.reducedAmount</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -129,7 +133,14 @@
                                     <ul class="list-group list-group-minimal">
                                         <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
                                             Total
-                                            <span>@Model.OrderHeader.OrderTotal.ToString("c")</span>
+                                            @if (ViewBag.DiscountPrice != null)
+                                            {
+                                                <span id="discountPrice">@ViewBag.DiscountPrice</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@Model.OrderHeader.OrderTotal.ToString("c")</span>
+                                            }                    
                                         </li>
                                     </ul>
                                 </div>
@@ -156,3 +167,40 @@
 
 <script src="~/js/vendor.min.js"></script>
 <script src="~/js/app.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#applyCouponButton").click(function () {
+            var coupon = $("#couponInput").val();
+            var orderTotal = "@Model.OrderHeader.OrderTotal";
+
+            var url = "/Customer/Cart/Coupon?coupon=" + coupon + "&orderTotal=" + orderTotal;
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    // Handle the success response
+                    if (response.success) {
+                        var discountPrice = response.discountPrice;
+                        var reducedAmount = response.reducedAmount;
+
+                        // Update the UI with the discounted total
+                        $("#discountPrice").text(discountPrice.toFixed(2));
+                        $("#totalAmount").text(reducedAmount.toFixed(2));
+                    } else {
+                        // Handle the error response, such as displaying an error message
+                        console.log(response.error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle the error response, such as displaying an error message
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>

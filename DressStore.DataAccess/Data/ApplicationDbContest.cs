@@ -18,6 +18,7 @@ namespace DressStore.DataAccess.Data
         public DbSet<ShoppingCart> shoppingCarts { get; set; }
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

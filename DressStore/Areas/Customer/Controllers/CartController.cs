@@ -3,8 +3,11 @@ using DressStore.Models;
 using DressStore.Models.ViewModels;
 using DressStore.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using Stripe.Checkout;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace DressStore.Areas.Customer.Controllers
@@ -46,6 +49,7 @@ namespace DressStore.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 
             }
+            
             return View(ShoppingCartVM);
         }
 
@@ -94,10 +98,14 @@ namespace DressStore.Areas.Customer.Controllers
                 OrderHeader = new()
             };
 
+
             ShoppingCartVM.OrderHeader.ApplicationUser =await _wholeRepo.applicationUser.GetAsync(u=>u.Id == userId);
 
             //To pass the phone number
             //ShoppingCartVM.OrderHeader.phoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+
+            string data = TempData["DiscountPrice"] as string;
+            string data1 = TempData["reducedAmount"] as string;
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
@@ -105,6 +113,7 @@ namespace DressStore.Areas.Customer.Controllers
                 cart.EachProductPrice = (cart.Price * cart.Count);
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
+
             return View(ShoppingCartVM);
         }
         [HttpPost]
@@ -230,6 +239,57 @@ namespace DressStore.Areas.Customer.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> Coupon(string coupon, int? OrderTotal)
+        {
+            if (string.IsNullOrEmpty(coupon) || OrderTotal == null)
+            {
+                return BadRequest(); // Return an appropriate error response
+            }
+
+            var couponObj = await _wholeRepo.coupon.GetAsync(u => u.CouponName == coupon);
+
+            if (couponObj != null)
+            {
+                if (OrderTotal >= couponObj.MinPurchase)
+                {
+                    decimal discountPrice;
+                    decimal cartTotal = Convert.ToDecimal(OrderTotal);
+                    if (couponObj.DiscountAmount > 0)
+                    {
+                        discountPrice = (decimal)(cartTotal - couponObj.DiscountAmount);
+                    }
+                    else
+                    {
+                        discountPrice = (decimal)(cartTotal - (cartTotal) * (couponObj.DiscountPercentage/100));
+                    }
+
+                    decimal reducedAmount = (decimal)(OrderTotal - discountPrice);
+                    ViewBag.DiscountPrice = discountPrice.ToString("c");
+                    ViewBag.reducedAmount = reducedAmount.ToString("c");
+
+                    //TempData["DiscountPrice"] = discountPrice;
+                    //TempData["reducedAmount"] = reducedAmount;
+
+                    var response = new
+                    {
+                        success = true,
+                        discountPrice,
+                        reducedAmount
+                    };
+
+                    return Json(response); // Return the discount price
+                }
+                else
+                {
+                    TempData["error"] = "Order total is below the minimum purchase amount.";
+                    return BadRequest("Order total is below the minimum purchase amount."); // Return an appropriate error response
+                }
+            }
+            TempData["error"] = "Coupon not found.";
+            return NotFound("Coupon not found."); // Return an appropriate error response
+        }
+
         private double GetPrice (ShoppingCart shoppingCart)
         {
             return shoppingCart.Product.Price;

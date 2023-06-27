@@ -4,6 +4,7 @@ using DressStore.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DressStore.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContest))]
-    partial class ApplicationDbContestModelSnapshot : ModelSnapshot
+    [Migration("20230621160240_addCouponIdKeyToDb")]
+    partial class addCouponIdKeyToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,9 +156,6 @@ namespace DressStore.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("CouponDiscount")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime2");
 
@@ -166,9 +166,6 @@ namespace DressStore.DataAccess.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("NewOrderTotal")
-                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
