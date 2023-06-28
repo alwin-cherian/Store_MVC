@@ -19,5 +19,7 @@ namespace DressStore.Models
         public string? PostalCode { get; set; }
 
         public bool IsBlocked { get; set; }
+
+        public double wallet { get; set; }
     }
 }

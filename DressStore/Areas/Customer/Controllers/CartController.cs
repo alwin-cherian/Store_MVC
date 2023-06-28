@@ -95,10 +95,10 @@ namespace DressStore.Areas.Customer.Controllers
             {
                 ShoppingCartList =await _wholeRepo.shoppingCart.GetAllAsync(u => u.ApplicationUserId == userId,
                 includeProperties: "Product"),
-                OrderHeader = new()
+                OrderHeader = new(),
             };
 
-
+            ShoppingCartVM.ApplicationUser = await _wholeRepo.applicationUser.GetAsync(u => u.Id == userId);
             ShoppingCartVM.OrderHeader.ApplicationUser =await _wholeRepo.applicationUser.GetAsync(u=>u.Id == userId);
 
             //To pass the phone number
@@ -264,18 +264,13 @@ namespace DressStore.Areas.Customer.Controllers
                         discountPrice = (decimal)(cartTotal - (cartTotal) * (couponObj.DiscountPercentage/100));
                     }
 
-                    decimal reducedAmount = (decimal)(OrderTotal - discountPrice);
-                    ViewBag.DiscountPrice = discountPrice.ToString("c");
-                    ViewBag.reducedAmount = reducedAmount.ToString("c");
-
-                    //TempData["DiscountPrice"] = discountPrice;
-                    //TempData["reducedAmount"] = reducedAmount;
+                    decimal newTotal = (decimal)(OrderTotal - discountPrice);
 
                     var response = new
                     {
                         success = true,
                         discountPrice,
-                        reducedAmount
+                        newTotal
                     };
 
                     return Json(response); // Return the discount price
@@ -283,11 +278,23 @@ namespace DressStore.Areas.Customer.Controllers
                 else
                 {
                     TempData["error"] = "Order total is below the minimum purchase amount.";
-                    return BadRequest("Order total is below the minimum purchase amount."); // Return an appropriate error response
+                    
+                    var responses = new
+                    {
+                        success = false,
+                        errorMessage = "Order total is below the minimum purchase amount."
+                };
+                    return Json(responses);
+                    // Return an appropriate error response
                 }
             }
             TempData["error"] = "Coupon not found.";
-            return NotFound("Coupon not found."); // Return an appropriate error response
+            var responsed = new
+            {
+                success = false,
+                errorMessage = "Coupon not found"
+            };
+            return Json(responsed);
         }
 
         private double GetPrice (ShoppingCart shoppingCart)

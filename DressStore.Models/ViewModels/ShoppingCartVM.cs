@@ -12,6 +12,6 @@ namespace DressStore.Models.ViewModels
 
         public OrderHeader OrderHeader { get; set;}
 
-
+        public ApplicationUser ApplicationUser { get; set;}
     }
 }

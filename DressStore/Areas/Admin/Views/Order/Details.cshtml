@@ -241,7 +241,7 @@
 
                             @if (User.IsInRole(SD.Role_Admin))
                             {
-                                @if(Model.OrderHeader.OrderStatus == SD.StatusApproved)
+                                @if (Model.OrderHeader.OrderStatus == SD.StatusApproved)
                                 {
                                     <button type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1">Start Processing</button>
                                 }
@@ -249,13 +249,14 @@
                                 {
                                     <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-primary form-control my-1">Ship Order</button>
                                 }
-                                @if(Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
-                               Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
-                              Model.OrderHeader.OrderStatus != SD.StatusCancelled)
-                                {
-                                    <button type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
-                                }
                             }
+                            @if(Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
+                               Model.OrderHeader.OrderStatus != SD.StatusShipped &&
+                              Model.OrderHeader.OrderStatus != SD.StatusCancelled)
+                              {
+                                  <button type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1">Cancel Order</button>
+                              }
+                            
                             
                         </div>
                     </div>

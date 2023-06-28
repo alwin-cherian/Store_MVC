@@ -65,6 +65,14 @@
                             <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
                         </div>
                     </div>
+                    <div class="row align-items-end mb-2">
+                        <div class="col-md-6">
+                            <h2 class="h3 mb-0"><span class="text-muted"><i class="bi bi-wallet2"></i></span> Wallet</h2>
+                        </div>
+                        <div class="col-md-6 text-md-right">
+                            <h2 class="h3 mb-0"><span>@Model.ApplicationUser.wallet.ToString("c")</span></h2>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -125,7 +133,7 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Coupon Discount
-                                            <span id="totalAmount">@ViewBag.reducedAmount</span>
+                                            <span id="newTotal">@*@ViewBag.reducedAmount*@</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -133,14 +141,16 @@
                                     <ul class="list-group list-group-minimal">
                                         <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
                                             Total
-                                            @if (ViewBag.DiscountPrice != null)
+
+                                            <span id="discountPrice"> </span>
+                                            @*@if (ViewBag.DiscountPrice != null)
                                             {
                                                 <span id="discountPrice">@ViewBag.DiscountPrice</span>
                                             }
                                             else
                                             {
                                                 <span>@Model.OrderHeader.OrderTotal.ToString("c")</span>
-                                            }                    
+                                            }  *@                  
                                         </li>
                                     </ul>
                                 </div>
@@ -186,11 +196,11 @@
                     // Handle the success response
                     if (response.success) {
                         var discountPrice = response.discountPrice;
-                        var reducedAmount = response.reducedAmount;
+                        var newTotal = response.newTotal;
 
                         // Update the UI with the discounted total
                         $("#discountPrice").text(discountPrice.toFixed(2));
-                        $("#totalAmount").text(reducedAmount.toFixed(2));
+                        $("#newTotal").text(newTotal.toFixed(2));
                     } else {
                         // Handle the error response, such as displaying an error message
                         console.log(response.error);
