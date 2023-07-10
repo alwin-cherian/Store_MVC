@@ -31,6 +31,12 @@ namespace DressStore.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult DashBoard()
+        {
+
+            return View();
+        }
+
         public async Task<IActionResult> Details(int orderId)
         {
             OrderVM = new()
@@ -126,10 +132,10 @@ namespace DressStore.Areas.Admin.Controllers
 
             htmlcontent += "</table>";
             htmlcontent += "</div>";
-
+            htmlcontent += "<br/>";
+            htmlcontent += "<br/>";
             htmlcontent += "<div style='text-align:left'>";
-            htmlcontent += "<h1> Summary Info </h1>";
-            htmlcontent += "<table style='border:1px solid #000;float:right' >";
+            htmlcontent += "<table style='width:100%; border:1px solid #000;float:right' >";
             htmlcontent += "<tr>";
             htmlcontent += "<td style='border:1px solid #000'> Summary Total </td>";
             htmlcontent += "</tr>";
@@ -213,6 +219,8 @@ namespace DressStore.Areas.Admin.Controllers
             TempData["success"] = "Order cancelled Succussfully";
             return RedirectToAction(nameof(Details) , new { orderId = OrderVM.OrderHeader.Id});
         }
+
+
 
             #region APICALLS
             [HttpGet]

@@ -1,5 +1,9 @@
 ﻿@model ProductViewModel
 
+@{
+    Layout = "_AdminLayout";
+}
+
 <form method="post" enctype="multipart/form-data">
     <input asp-for="product.Id" hidden />
     <input asp-for="product.ImageUrl" hidden />
@@ -43,9 +47,6 @@
         </div>
     </div>
 </form>
-
-<script src="~/js/vendor.min.js"></script>
-<script src="~/js/app.js"></script>
 
 
 @section Scripts{

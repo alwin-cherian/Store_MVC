@@ -26,6 +26,7 @@ namespace DressStore.Models
         public decimal? CouponDiscount { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? NewOrderTotal { get; set; }
+        public string? CouponCode { get; set; }
 
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }

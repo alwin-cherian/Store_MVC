@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using DressStore.DataAccess.Repository.IRepository;
 using DressStore.Models;
 using DressStore.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -21,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace DressStore.Areas.Identity.Pages.Account
@@ -30,6 +32,7 @@ namespace DressStore.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IWholeRepository _repository;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -39,6 +42,7 @@ namespace DressStore.Areas.Identity.Pages.Account
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserStore<IdentityUser> userStore,
+            IWholeRepository repository,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
@@ -50,6 +54,7 @@ namespace DressStore.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _repository = repository;
         }
 
         /// <summary>
@@ -152,9 +157,16 @@ namespace DressStore.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                var UserNameExist = await _repository.applicationUser.GetAsync(u=>u.UserName == user.UserName);
+                if(UserNameExist != null)
+                {
+                    TempData["error"] = "UserName already exist , Try a New one";
+                    return Page();
+                }
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.UserName = Input.UserName;
+                user.UserName = Input.UserName; 
                 user.PhoneNumber = Input.PhoneNumber;
                 user.wallet = 0.00;
                 var result = await _userManager.CreateAsync(user, Input.Password);

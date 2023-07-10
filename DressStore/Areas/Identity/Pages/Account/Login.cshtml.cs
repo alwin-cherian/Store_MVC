@@ -115,20 +115,18 @@ namespace DressStore.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                
-                //var user = await _userManager.FindByNameAsync(Input.UserName);
-
-                //if(user != null && user.)
-                //{
-                //    ModelState.AddModelError(string.Empty, "User is blocked.");
-                //    return Page();
-                //}
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true               
 
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(Input.UserName);
+
+                    if ( await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return Redirect("/Admin/Dashboard/Index");
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

@@ -16,7 +16,7 @@
     </PackageReference>
     <PackageReference Include="Polybioz.HtmlRenderer.PdfSharp.Core" Version="1.0.0" />
     <PackageReference Include="Stripe.net" Version="41.20.0" />
-    <PackageReference Include="Twilio" Version="6.8.0" />
+    <PackageReference Include="Twilio" Version="6.9.0" />
   </ItemGroup>
 
   <ItemGroup>

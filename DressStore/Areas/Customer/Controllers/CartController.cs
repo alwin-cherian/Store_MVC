@@ -104,9 +104,6 @@ namespace DressStore.Areas.Customer.Controllers
             //To pass the phone number
             //ShoppingCartVM.OrderHeader.phoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
 
-            string data = TempData["DiscountPrice"] as string;
-            string data1 = TempData["reducedAmount"] as string;
-
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
                 cart.Price = GetPrice(cart);
@@ -143,6 +140,7 @@ namespace DressStore.Areas.Customer.Controllers
             ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
             ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
 
+
             _wholeRepo.orderHeader.Add(ShoppingCartVM.OrderHeader);
             _wholeRepo.Save();
 
@@ -159,6 +157,25 @@ namespace DressStore.Areas.Customer.Controllers
                 _wholeRepo.Save();
             }
 
+            if (!string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.CouponCode))
+            {
+                var couponResponse = await CouponCheckout(ShoppingCartVM.OrderHeader.CouponCode, (int)ShoppingCartVM.OrderHeader.OrderTotal);
+                
+                if (couponResponse != null)
+                {
+                    // Update the order total with the new total
+                    ShoppingCartVM.OrderHeader.CouponDiscount = couponResponse;
+                    ShoppingCartVM.OrderHeader.OrderTotal -= (double)couponResponse;
+                    
+                }
+                else
+                {
+                    // Handle the error case when the coupon is not valid or the order total is below the minimum purchase amount
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
             foreach (var item in ShoppingCartVM.ShoppingCartList)
             {
                 var soldQuantity = item.Count; // Get the quantity of the item sold
@@ -167,40 +184,57 @@ namespace DressStore.Areas.Customer.Controllers
                 _wholeRepo.Save(); 
             }
 
+            double totalAmountStripe = ShoppingCartVM.OrderHeader.OrderTotal;
+
             var domain = "https://localhost:7143/";
             var options = new SessionCreateOptions
             {
-                SuccessUrl = domain+ $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
-                CancelUrl = domain+"customer/cart/Index",
-                
-                LineItems = new List<SessionLineItemOptions>(),
+                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                CancelUrl = domain + "customer/cart/Index",
+
+                LineItems = new List<SessionLineItemOptions>
+                {
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            Currency = "inr",
+                            UnitAmount = (long)(totalAmountStripe * 100),
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = "VENDOR Store",
+                                Description = "Paying to Vendor Store through Stripe"
+                            }
+                        },
+                        Quantity = 1
+                    }
+                },
                 Mode = "payment",
             };
 
-            foreach(var item in ShoppingCartVM.ShoppingCartList)
-            {
-                var sessionLineItem = new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = (long)(item.Price * 100),
-                        Currency = "inr",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = item.Product.Title
-                        }
-                    },
-                    Quantity = item.Count
-                };
-                options.LineItems.Add(sessionLineItem);
-            }
+            //foreach (var item in ShoppingCartVM.ShoppingCartList)
+            //{
+            //    var sessionLineItem = new SessionLineItemOptions
+            //    {
+            //        PriceData = new SessionLineItemPriceDataOptions
+            //        {
+            //            UnitAmount = (long)(item.Price * 100),
+            //            Currency = "inr",
+            //            ProductData = new SessionLineItemPriceDataProductDataOptions
+            //            {
+            //                Name = item.Product.Title
+            //            }
+            //        },
+            //        Quantity = item.Count
+            //    };
+            //    options.LineItems.Add(sessionLineItem);
+            //}
             var service = new SessionService();
             Session session = service.Create(options);
             _wholeRepo.orderHeader.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
             _wholeRepo.Save();
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
-
 
 
             return RedirectToAction(nameof(OrderConfirmation), new {id = ShoppingCartVM.OrderHeader.Id});
@@ -295,6 +329,45 @@ namespace DressStore.Areas.Customer.Controllers
                 errorMessage = "Coupon not found"
             };
             return Json(responsed);
+        }
+
+        public async Task<decimal> CouponCheckout(string coupon, int? OrderTotal)
+        {
+            if (string.IsNullOrEmpty(coupon) || OrderTotal == null)
+            {
+                return 0; // Return an appropriate error response
+            }
+
+            var couponObj = await _wholeRepo.coupon.GetAsync(u => u.CouponName == coupon);
+
+            if (couponObj != null)
+            {
+                if (OrderTotal >= couponObj.MinPurchase)
+                {
+                    decimal newTotal;
+                    decimal cartTotal = Convert.ToDecimal(OrderTotal);
+                    if (couponObj.DiscountAmount > 0)
+                    {
+                        newTotal = (decimal)(cartTotal - couponObj.DiscountAmount);
+                    }
+                    else
+                    {
+                        newTotal = (decimal)(cartTotal - (cartTotal) * (couponObj.DiscountPercentage / 100));
+                    }
+
+                    decimal discountPrice = (decimal)(OrderTotal - newTotal);
+
+                    return discountPrice; // Return the discount price
+                }
+                else
+                {
+                    TempData["error"] = "Order total is below the minimum purchase amount.";
+                    return 0;
+                    // Return an appropriate error response
+                }
+            }
+            TempData["error"] = "Coupon not found.";
+            return 0;
         }
 
         private double GetPrice (ShoppingCart shoppingCart)

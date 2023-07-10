@@ -153,6 +153,9 @@ namespace DressStore.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CouponCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal?>("CouponDiscount")
                         .HasColumnType("decimal(18, 2)");
 

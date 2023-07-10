@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
 
-    <title>Home</title>
+    <title>VENDOR</title>
+    <link rel="shortcut icon" href="~/images/logo-dark.svg" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121642637-4"></script>
@@ -40,12 +41,22 @@
                                     Home
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">
-                                    Orders
-                                </a>
-                            </li>
-
+                            @if (User.IsInRole(SD.Role_Admin))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                        Orders
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole(SD.Role_Customer))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Orders" asp-action="Index">
+                                        Orders
+                                    </a>
+                                </li>
+                            }
                             @if (User.IsInRole(SD.Role_Admin))
                             {
                                 <li class="nav-item dropdown">

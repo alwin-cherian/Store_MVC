@@ -1,0 +1,36 @@
+HTTrack3.49-2+htsswf+htsjava launched on Fri, 28 Apr 2023 13:28:56 at https://vetra.laborasyon.com/demos/default/index.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://vetra.laborasyon.com/demos/default/index.html -O1 "C:\My Web Sites\admin dashboard" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+13:31:41	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/demos/default/card.html (from https://vetra.laborasyon.com/demos/default/index.html)
+13:31:46	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/demos/default/tags-input.html (from https://vetra.laborasyon.com/demos/default/index.html)
+13:32:12	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/libs/charts/apex/apexcharts.min.js (from https://vetra.laborasyon.com/demos/default/index.html)
+13:32:17	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/dist/js/examples/invoices.js (from https://vetra.laborasyon.com/demos/default/invoices.html)
+13:32:17	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/libs/tagsinput/bootstrap-tagsinput.css (from https://vetra.laborasyon.com/demos/default/email.html)
+13:32:21	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/assets/images/portfolio-five.jpg (from https://vetra.laborasyon.com/demos/default/search-page.html)
+13:32:22	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/assets/images/portfolio-six.jpg (from https://vetra.laborasyon.com/demos/default/search-page.html)
+13:32:24	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/dist/js/examples/charts/apex.js (from https://vetra.laborasyon.com/demos/default/apexchart.html)
+13:32:24	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/libs/charts/chartjs/chart.min.js (from https://vetra.laborasyon.com/demos/default/chartjs.html)
+13:32:33	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/dist/js/examples/rating.js (from https://vetra.laborasyon.com/demos/default/rating.html)
+13:32:33	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/libs/charts/apex/apexcharts.min.js (from https://vetra.laborasyon.com/demos/default/index.html)
+13:32:33	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/dist/icons/themify-icons/fonts/themify.eot?-fvbane (from https://vetra.laborasyon.com/dist/icons/themify-icons/themify-icons.css)
+13:32:33	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/blots/ (from https://vetra.laborasyon.com/libs/quill/quill.js)
+13:32:33	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/formats/ (from https://vetra.laborasyon.com/libs/quill/quill.js)
+13:32:33	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/dist/js/examples/charts/apex.js (from https://vetra.laborasyon.com/demos/default/apexchart.html)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/raphael.svg (from https://vetra.laborasyon.com/libs/charts/justgage/raphael-2.1.4.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/zlib/deflate.js (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/zlib/inflate.js (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/ (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/buttons.pdf (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/xl/worksheets/sheet1.xml (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/xl/workbook.xml (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/xl/styles.xml (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Error: 	"Not Found" (404) at link https://vetra.laborasyon.com/demos/default/[Content_Types].xml (from https://vetra.laborasyon.com/libs/dataTable/datatables.min.js)
+13:32:34	Warning: 	Retry after error -4 (No data (connection closed)) at link https://vetra.laborasyon.com/dist/icons/themify-icons/fonts/themify.eot?-fvbane (from https://vetra.laborasyon.com/dist/icons/themify-icons/themify-icons.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 3 minutes 39 seconds : 275 links scanned, 249 files written (15622006 bytes overall) [5451669 bytes received at 24893 bytes/sec], 13030347 bytes transferred using HTTP compression in 198 files, ratio 20%, 10.5 requests per connection
+(11 errors, 14 warnings, 0 messages)

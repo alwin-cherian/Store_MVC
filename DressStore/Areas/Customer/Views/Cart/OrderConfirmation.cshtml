@@ -5,14 +5,17 @@
     <div class="container">
         <div class="row align-items-center justify-content-center vh-100">
             <div class="col-10 col-md-8 col-lg-4 text-center">
-                <h1><i class="bi bi-check-square-fill"></i></h1>
-                <p class="display-1 font-weight-bold">Great <i class="bi bi-emoji-smile-fill"></i></p>
-                <p class="lead"> Order Has been Placed Successfully with order Id : @Model.OrderId & Transaction Id: @Model.TransactionId </p>
-                <button onclick="location.href='@Url.Action("Index", "Home")'" type="button" class="btn btn-primary">Go Back !..</button>
+                <div class="card" style="background-color: white; padding: 20px;">
+                    <h1><i class="bi bi-check-square-fill"></i></h1>
+                    <p class="display-1 font-weight-bold">Great <i class="bi bi-emoji-smile-fill"></i></p>
+                    <p class="lead">Order has been placed successfully with Order ID: @Model.OrderId & Transaction ID: @Model.TransactionId</p>
+                    <button onclick="location.href='@Url.Action("Index", "Home")'" type="button" class="btn btn-primary">Go Back!</button>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <script src="~/js/vendor.min.js"></script>
 <script src="~/js/app.js"></script>
