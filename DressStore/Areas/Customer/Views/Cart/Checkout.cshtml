@@ -46,7 +46,25 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="State">State</label>
-                            <input asp-for="OrderHeader.State" type="text" class="form-control" id="State" placeholder="">
+                            <select asp-for="OrderHeader.State" class="form-control" id="state">
+                                <option value="">  Select your state : </option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="West Bengal">West Bengal</option>
+
+                            </select>
                             <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
@@ -217,3 +235,4 @@
         });
     });
 </script>
+

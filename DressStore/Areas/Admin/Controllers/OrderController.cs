@@ -31,11 +31,6 @@ namespace DressStore.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult DashBoard()
-        {
-
-            return View();
-        }
 
         public async Task<IActionResult> Details(int orderId)
         {
@@ -85,6 +80,7 @@ namespace DressStore.Areas.Admin.Controllers
             {
                 OrderHeader = await _repo.orderHeader.GetAsync(u => u.Id == orderId, includeProperties: "ApplicationUser"),
                 OrderDetail = await _repo.orderDetail.GetAllAsync(u => u.OrderHeaderId == orderId, includeProperties: "Product")
+
             };
 
             var document = new PdfDocument();

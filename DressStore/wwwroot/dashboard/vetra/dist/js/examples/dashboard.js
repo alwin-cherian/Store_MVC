@@ -199,7 +199,7 @@ $(function () {
                 series: [
                     {
                         name: "Sales",
-                        data: [65, 60, 62, 69, 71, 65, 68, 67, 60, 61, 59, 64]
+                        data: [80, 80, 80, 80, 71, 65, 68, 67, 60, 61, 59, 64]
                     },
                     {
                         name: 'Orders',
@@ -296,8 +296,8 @@ $(function () {
                     width: 0
                 },
                 colors: [colors.orange, colors.cyan, colors.indigo],
-                series: [48, 30, 22],
-                labels: ['Social Media', 'Google', 'Email'],
+                series: [3, 7, 2],
+                labels: ['Shipped', 'Approved', 'pending'],
                 legend: {
                     show: false
                 }

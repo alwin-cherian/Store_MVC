@@ -25,17 +25,21 @@
     <link rel="stylesheet" href="~/dashboard/vetra/dist/css/app.min.css" type="text/css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 </head>
 <body>
+
+    
     <!-- menu -->
     <div class="menu">
         <div class="menu-header">
-            <a href="index.html" class="menu-header-logo">
+            <a asp-controller="Dashboard" asp-action="Index" class="menu-header-logo">
                 <img src="~/images/logo-dark.svg" alt="Logo">
             </a>
             <a href="index.html" class="btn btn-sm menu-close-btn">
