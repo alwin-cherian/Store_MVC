@@ -186,7 +186,7 @@ namespace DressStore.Areas.Customer.Controllers
 
             double totalAmountStripe = ShoppingCartVM.OrderHeader.OrderTotal;
 
-            var domain = "https://localhost:7143/";
+            var domain = Request.Scheme+ "://"+ Request.Host.Value + "/";
             var options = new SessionCreateOptions
             {
                 SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
