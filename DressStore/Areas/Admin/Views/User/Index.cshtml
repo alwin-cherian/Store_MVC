@@ -65,13 +65,13 @@
                             @obj.Email
                         </td>
                         <td>
-                            @if (!obj.IsBlocked)
+                            @if (obj.LockoutEnd > DateTime.Now)
                             {
-                                <button onclick="location.href='@Url.Action("Block", "User", new { id = obj.Id })'" class="w-100 btn btn-lg btn-primary text-white">Block</button>
+                                <button onclick="location.href='@Url.Action("Unlock", "User", new { id = obj.Id })'" class="w-100 btn btn-lg btn-primary text-white">UnBlock</button>
                             }
                             else
                             {
-                                <button onclick="location.href='@Url.Action("UnBlock", "User", new { id = obj.Id })'" class="w-100 btn btn-lg btn-primary text-white">UnBlock</button>
+                                <button onclick="location.href='@Url.Action("Lock", "User", new { id = obj.Id })'" class="w-100 btn btn-lg btn-primary text-white">Block</button>
                             }
                         </td>
                     </tr>

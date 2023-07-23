@@ -28,31 +28,52 @@ namespace DressStore.Areas.Admin.Controllers
             return View(objUserList);
         }
 
-        public async Task<IActionResult> UnBlock(string? id)
+        public async Task<IActionResult> Lock(string id)
         {
-            ApplicationUser? user = await _wholeRepository.applicationUser.GetAsync(u => u.Id == id);
-            if (user == null)
+
+            var objFromDb = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (objFromDb == null)
             {
-                return NotFound();
+                return View();
             }
-            user.IsBlocked = false;
-            _db.ApplicationUsers.Update(user);
-            _db.SaveChanges();
+            if(objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
+            {
+                //user is currently locked and we need to UnLock User
+                objFromDb.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+            }
+            _db.SaveChangesAsync();
             return RedirectToAction("Index");
+
         }
 
-        public async Task<IActionResult> Block(string? id)
+        public async Task<IActionResult> Unlock(string id)
         {
-            ApplicationUser? user = await _wholeRepository.applicationUser.GetAsync(u => u.Id == id);
-            if (user == null)
+
+            var objFromDb = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (objFromDb == null)
             {
-                return NotFound();
+                return View();
             }
-            user.IsBlocked = true;
-            _db.ApplicationUsers.Update(user);
-            _db.SaveChanges();
+            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
+            {
+                //user is currently locked and we need to UnLock User
+                objFromDb.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+            }
+            _db.SaveChangesAsync();
             return RedirectToAction("Index");
-        } 
+
+        }
+
 
         #region APICALLS
         [HttpGet]

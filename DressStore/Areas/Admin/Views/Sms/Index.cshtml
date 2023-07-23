@@ -1,0 +1,118 @@
+﻿
+
+<section class="py-md-0">
+    <div class="image image-overlay" style="background-image:url(/images/background-2.jpg)"></div>
+    <div class="container">
+        
+            <div class="row justify-content-center align-items-center vh-md-100">
+                <div class="col-md-10 col-lg-5">
+                    <div class="accordion accordion-portal" id="accordionExample">
+                        <div class="card active">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Sign In
+                                    </button>
+                                </h2>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="row mt-2">
+                                        <div class="form-group col-12">
+                                            <label class="form-label">Phone Number</label>
+                                            <input id="phoneNumberInput" class="form-control" aria-required="true" placeholder="phone number" />
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <a id="phoneNumberButton" class="eyebrow underline action">Click to recieve OTP</a>
+                                        </div>
+                                        <div class="form-group col-12 mt-1">
+                                            <input id="inputOTP" class="form-control"  aria-required="true" placeholder="OTP.." />
+                                        </div>
+
+                                        <div class="col-12 mt-2">
+                                            <button id="OTPloginButton" class="w-100 btn btn-lg btn-primary text-white">Log in</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script src="~/js/vendor.min.js"></script>
+<script src="~/js/app.js"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function (){
+        $("#phoneNumberButton").click(function () {
+            var inputPhoneNum = $("#phoneNumberInput").val();
+
+            var url = "/Admin/Sms/CheckPhoneNumber?phoneNum=" + inputPhoneNum;
+
+            $.ajax({
+                url: url,
+                type:"GET",
+                success: function (response) {
+                    if(response.success){
+                        var phoneNumber = response.phoneNum;
+
+                        toastr.success(response.successMessage);
+                    }
+                    else{
+                        toastr.error(response.errorMessage);
+                    }
+                },
+                error: function(xhr, status, error){
+                    console.log(error);
+                }
+            });
+        });
+
+        console.log("otp step 11");
+
+        $("#OTPloginButton").click(function () {
+            console.log("otp step 12");
+
+            var inputOTP = $("#inputOTP").val();
+            var inputPhoneNum = $("#phoneNumberInput").val();
+
+            var url = "/Admin/Sms/EnterOTP?phoneNum=" + inputPhoneNum + "&OTPcode=" + inputOTP;
+
+            
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    console.log('this is the response', response);
+                    if (response.success) {
+                        console.log("otp ok")
+                        
+                        window.location.replace("https://localhost:7143/Customer/Home/Index");
+
+                    }
+                    else {
+                        toastr.error(response.errorMessage);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+            console.log("OTP check end ");
+        });
+    });
+
+</script>
